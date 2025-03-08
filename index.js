@@ -11,7 +11,11 @@ dotenv.config();
 
 
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+    origin: '', // replace with your frontend url,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'] // replace with your required headers,
+}));
 
 
 const db = mysql.createConnection({
