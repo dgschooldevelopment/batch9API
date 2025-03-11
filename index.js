@@ -55,6 +55,24 @@ app.post('/addDetails', (req, res) => {
     });
 });
 
+
+
+app.post('/signUp', (req, res) => {
+    const { username,password,contactNo } = req.body;
+
+    // ✅ Fix SQL Query (corrected column name)
+    const sql = 'INSERT INTO user (username,password,contactNo) VALUES (?, ?, ?)';
+
+    db.query(sql, [ username,password,contactNo ], (err, result) => {
+        if (err) {
+            console.error('Error inserting data:', err);
+            return res.status(500).json({ error: 'Database error', details: err });
+        }
+        res.status(200).json({ message: 'Sign up successfully' });
+        console.log('✅ Sign up successfully');
+    });
+});
+
 // ✅ Start Server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
