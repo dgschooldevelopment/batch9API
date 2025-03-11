@@ -58,12 +58,12 @@ app.post('/addDetails', (req, res) => {
 
 
 app.post('/signUp', (req, res) => {
-    const { username,password,contactNo } = req.body;
+    const { username, password, contactNo } = req.body;
 
     // ✅ Fix SQL Query (corrected column name)
     const sql = 'INSERT INTO user (username,password,contactNo) VALUES (?, ?, ?)';
 
-    db.query(sql, [ username,password,contactNo ], (err, result) => {
+    db.query(sql, [username, password, contactNo], (err, result) => {
         if (err) {
             console.error('Error inserting data:', err);
             return res.status(500).json({ error: 'Database error', details: err });
@@ -81,19 +81,22 @@ app.post('/login', (req, res) => {
     // ✅ Fix SQL Query (corrected column name)
     const sql = 'SELECT * FROM user WHERE username =? AND password =?';
 
-    db.query(sql, [username, password ], (err, result) => {
+    db.query(sql, [username, password], (err, result) => {
         if (err) {
-            console.error('Error querying data:', err);
-            return res.status(500).json({ error: 'Database error', details: err });
+            return res.status(500).json({
+                succes: false,
+            });
         }
         if (result.length === 0) {
-            return res.status(401).json({ error: 'Invalid credentials' });
+            return res.status(401).json({
+                succes: false,
+            });
         }
         res.status(200).json({
-            succes:true,
-            user: result[0] 
+            succes: true,
+            user: result[0]
         });
-        
+
         console.log('Login successful');
     });
 })
